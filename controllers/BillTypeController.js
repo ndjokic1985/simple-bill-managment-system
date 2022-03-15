@@ -1,26 +1,75 @@
-const index = (req, res) => {
-    res.status(200);
-    res.json({ message: "All items!" });
+const BillType = require('../models/BillType');
+
+const index = async(req, res) => {
+    try {
+        const billTypes = await BillType.find();
+        res.status(200).json({
+            msg: 'success',
+            data: billTypes
+        })
+    } catch (error) {
+        res.status(500).json({ msg: error })
+    }
 };
 
-const create = (req, res) => {
-    res.status(201);
-    res.json({ message: "Item has been created!" });
+const create = async(req, res) => {
+    try {
+        const billType = await BillType.create(req.body);
+        res.status(201).json({ msg: 'success', data: billType })
+    } catch (error) {
+        res.status(500).json({ msg: error })
+    }
 };
 
-const view = (req, res) => {
-    res.status(200);
-    res.json({ message: "Item detail!" });
+const view = async(req, res) => {
+    try {
+        const { id } = req.params;
+        const billType = await BillType.findById(id);
+        if (!billType) {
+            return res.status(404).json({
+                msg: `Bill type with ${id} not found`
+            });
+        }
+        res.status(200).json({
+            msg: 'success',
+            data: billType
+        })
+    } catch (error) {
+        res.status(500).json({ msg: error })
+    }
 };
 
-const remove = (req, res) => {
-    res.status(204);
-    res.json({ message: "Item has been deleted!" });
+const remove = async(req, res) => {
+    try {
+        const { id } = req.params;
+        const billType = await BillType.findByIdAndRemove(id);
+        if (!billType) {
+            return res.status(404).json({
+                msg: `Bill type with ${id} not found`
+            });
+
+        }
+        res.status(204).json();
+    } catch (error) {
+        res.status(500).json({ msg: error })
+    }
 };
 
-const update = (req, res) => {
-    res.status(200);
-    res.json({ message: "Item has been updated!" });
+const update = async(req, res) => {
+    try {
+        const { id } = req.params;
+        const billType = await BillType.findByIdAndUpdate(id, req.body, { new: true, runValidators: true });
+        if (!billType) {
+            return res.status(404).json({
+                msg: `Bill type with ${id} not found`
+            });
+        }
+        res.status(200).json({
+            data: billType
+        });
+    } catch (error) {
+        res.status(500).json({ msg: error })
+    }
 };
 module.exports = {
     index,

@@ -1,13 +1,11 @@
 const mongoose = require('mongoose');
 
 class Database {
+    constructor(connectionString) {
+        this.connectionString = connectionString
+    }
     connect() {
-        return mongoose.connect(process.env.MONGO_URI, {
-            useNewUrlParser: true,
-            useCreateIndex: true,
-            useFindAndModify: false,
-            useUnifiedTopology: true
-        });
+        return mongoose.connect(this.connectionString);
     }
 }
 
