@@ -2,7 +2,15 @@ const BillType = require('../models/BillType');
 
 const index = async(req, res) => {
     try {
-        const billTypes = await BillType.find();
+        const {
+            search,
+            skip,
+            limit
+        } = req.query;
+        const billTypes = await BillType.find({
+            name: { $regex: search }
+        }).skip(skip).limit(limit);
+
         res.status(200).json({
             msg: 'success',
             data: billTypes
