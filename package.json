@@ -9,6 +9,7 @@
         "start": "nodemon app.js"
     },
     "devDependencies": {
+        "eslint": "^8.12.0",
         "nodemon": "^2.0.15"
     }
 }
